@@ -64,7 +64,7 @@ export default function App() {
 
   return (
     <AppLayout>
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 grid-rows-[auto_auto_auto_auto_minmax(0,1fr)] sm:grid-cols-2 sm:grid-rows-[auto_auto_minmax(0,1fr)] xl:grid-cols-4 xl:grid-rows-[auto_minmax(0,1fr)]">
+      <div className="grid flex-1 grid-cols-1 gap-4 grid-rows-[auto_auto_auto_auto_1fr] sm:grid-cols-2 sm:grid-rows-[auto_auto_1fr] xl:grid-cols-4 xl:grid-rows-[auto_1fr]">
         {KPI_ITEMS.map((item) => (
           <KpiCard
             key={item.key}
