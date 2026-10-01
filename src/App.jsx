@@ -1,7 +1,23 @@
+import { useMemo, useState } from "react";
+import { Boxes, Package, Plus, Wallet } from "lucide-react";
 import AppLayout from "./components/layout/AppLayout";
-import { Wallet, Package, Boxes, Calculator, Table2 } from "lucide-react";
+import CategoryDonutChart from "./components/dashboard/CategoryDonutChart";
+import DataTable from "./components/dashboard/DataTable";
+import KpiCard from "./components/dashboard/KpiCard";
+import MaterialFormModal from "./components/dashboard/MaterialFormModal";
+import MiniBars from "./components/dashboard/MiniBars";
+import StatusFilter from "./components/dashboard/StatusFilter";
+import useMaterialTable from "./hooks/useMaterialTable";
+import useMaterials from "./hooks/useMaterials";
+import {
+  formatNumber,
+  formatRupiah,
+  formatRupiahCompact,
+  getSubtotal,
+} from "./utils/format";
+import { MATERIAL_STATUSES } from "./utils/validation";
 
-const KPI_CARDS = [
+const KPI_ITEMS = [
   {
     key: "totalNilai",
     label: "Total Nilai",
@@ -9,52 +25,103 @@ const KPI_CARDS = [
     span: "xl:col-span-2",
     emphasis: true,
   },
-  { key: "totalMaterial", label: "Total Material", icon: Package, span: "" },
-  { key: "totalQty", label: "Total Qty", icon: Boxes, span: "" },
-  { key: "avgPerItem", label: "Rata rata Item", icon: Calculator, span: "" },
+  { key: "totalMaterial", label: "Total Material", icon: Package },
+  { key: "totalQty", label: "Total Qty", icon: Boxes },
 ];
 
 export default function App() {
+  const { materials, isLoading, error, addMaterial } = useMaterials();
+  const table = useMaterialTable(materials);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const totalNilai = materials.reduce(
+    (sum, item) => sum + getSubtotal(item),
+    0,
+  );
+  const totalQty = materials.reduce((sum, item) => sum + item.qty, 0);
+
+  const kpiValues = {
+    totalNilai: formatRupiahCompact(totalNilai),
+    totalMaterial: formatNumber(materials.length),
+    totalQty: formatNumber(totalQty),
+  };
+
+  const kpiHints = {
+    totalNilai: formatRupiah(totalNilai),
+  };
+
+  const kpiCharts = useMemo(() => {
+    const byDate = [...materials].sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+      totalNilai: byDate.map((item) => getSubtotal(item)),
+      totalMaterial: MATERIAL_STATUSES.map(
+        (status) => materials.filter((item) => item.status === status).length,
+      ),
+      totalQty: byDate.map((item) => Number(item.qty)),
+    };
+  }, [materials]);
+
   return (
     <AppLayout>
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 sm:grid-cols-2 sm:grid-rows-[minmax(7rem,1fr)_minmax(0,1.75fr)] xl:grid-cols-4">
-        {KPI_CARDS.map((card) => {
-          const IconComponent = card.icon;
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 grid-rows-[auto_auto_auto_auto_minmax(0,1fr)] sm:grid-cols-2 sm:grid-rows-[auto_auto_minmax(0,1fr)] xl:grid-cols-4 xl:grid-rows-[auto_minmax(0,1fr)]">
+        {KPI_ITEMS.map((item) => (
+          <KpiCard
+            key={item.key}
+            label={item.label}
+            value={kpiValues[item.key]}
+            hint={kpiHints[item.key]}
+            chart={<MiniBars values={kpiCharts[item.key]} />}
+            icon={item.icon}
+            span={item.span}
+            emphasis={item.emphasis}
+          />
+        ))}
 
-          return (
-            <article
-              key={card.key}
-              className={`flex min-h-28 flex-col justify-between rounded-card border border-line bg-surface p-5 shadow-card ${card.span}`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <p className="text-xs font-medium text-ink-400">{card.label}</p>
-                <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-surface-muted text-ink-400">
-                  <IconComponent strokeWidth={1.9} className="size-4" />
-                </span>
-              </div>
-
-              <p
-                className={`mt-5 font-semibold tracking-tight text-ink-900 tabular-nums ${
-                  card.emphasis ? "text-3xl" : "text-2xl"
-                }`}
-              >
-                —
-              </p>
-            </article>
-          );
-        })}
+        <CategoryDonutChart materials={materials} />
 
         <article className="flex min-h-56 min-w-0 flex-col rounded-card border border-line bg-surface p-5 shadow-card sm:col-span-2 xl:col-span-3">
-          <div className="flex items-start justify-between gap-3">
-            <p className="text-xs font-medium text-ink-400">Data Material</p>
-            <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-surface-muted text-ink-400">
-              <Table2 strokeWidth={1.9} className="size-4" />
-            </span>
-          </div>
+          <DataTable
+            rows={table.rows}
+            isLoading={isLoading}
+            search={table.search}
+            onSearchChange={table.setSearch}
+            page={table.page}
+            totalPages={table.totalPages}
+            onPageChange={table.goToPage}
+            totalFiltered={table.totalFiltered}
+            toolbar={
+              <>
+                <StatusFilter
+                  value={table.statusFilter}
+                  onChange={table.setStatusFilter}
+                />
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-field bg-brand-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+                >
+                  <Plus strokeWidth={2.2} className="size-4" />
+                  Tambah
+                </button>
+              </>
+            }
+          />
 
-          <div className="mt-5 flex-1 rounded-field border border-dashed border-line" />
+          {error && (
+            <p className="mt-3 rounded-field bg-red-50 px-3 py-2 text-xs text-red-700">
+              {error}
+            </p>
+          )}
         </article>
       </div>
+
+      {isModalOpen && (
+        <MaterialFormModal
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={addMaterial}
+        />
+      )}
     </AppLayout>
   );
 }
