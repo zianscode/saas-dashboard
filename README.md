@@ -113,16 +113,16 @@ src/
               materials · isLoading · error · addMaterial
                                  ↓
         ┌────────────────────────┴────────────────────────┐
-        ↓                                                  ↓
-  hooks/useMaterialTable.js                          src/App.jsx
-  search · statusFilter · page                     ├─ reduce()  → KPI angka
-  rows · totalPages                                └─ useMemo() → MiniBars
-        ↓                                                  ↓
-        ↓                                                  ↓
+        ↓                                                 ↓
+  hooks/useMaterialTable.js                        src/App.jsx
+  search · statusFilter · page                   ├─ reduce()  → KPI angka
+  rows · totalPages                              └─ useMemo() → MiniBars
+        ↓                                                 ↓
+        ↓                                                 ↓
 components/dashboard/DataTable.jsx          CategoryDonutChart · KpiCard · MiniBars
 ```
 
-Semua angka & chart **dihitung dari data** — tidak ada angka hardcode di
+Semua angka & chart **dihitung dari data** tidak ada angka hardcode di
 komponen. Mengubah `dummyMaterials.json` → semua KPI & chart ikut berubah.
 
 ## Kenapa? `qty × harga`
