@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "materialName": "Semen Portland 40kg",
+    "category": "Bahan Baku",
+    "qty": 120,
+    "price": 58000,
+    "unit": "sak",
+    "date": "2026-09-02",
+    "status": "Selesai"
+  },
+  {
+    "id": 2,
+    "materialName": "Pasir Silika",
+    "category": "Bahan Baku",
+    "qty": 45,
+    "price": 185000,
+    "unit": "m3",
+    "date": "2026-09-03",
+    "status": "Proses"
+  },
+  {
+    "id": 3,
+    "materialName": "Besi Beton Ulir 10mm",
+    "category": "Baja",
+    "qty": 260,
+    "price": 92000,
+    "unit": "lonjor",
+    "date": "2026-09-04",
+    "status": "Selesai"
+  },
+  {
+    "id": 4,
+    "materialName": "Kayu Ulu 4x6",
+    "category": "Kayu",
+    "qty": 80,
+    "price": 245000,
+    "unit": "btg",
+    "date": "2026-09-05",
+    "status": "Tertunda"
+  },
+  {
+    "id": 5,
+    "materialName": "Cat Dinding Anti Air",
+    "category": "Finishing",
+    "qty": 32,
+    "price": 315000,
+    "unit": "pail",
+    "date": "2026-09-06",
+    "status": "Proses"
+  },
+  {
+    "id": 6,
+    "materialName": "Keramik 60x60 Premium",
+    "category": "Finishing",
+    "qty": 210,
+    "price": 128000,
+    "unit": "box",
+    "date": "2026-09-07",
+    "status": "Selesai"
+  },
+  {
+    "id": 7,
+    "materialName": "Pipa PVC 4 Inch",
+    "category": "Plumbing",
+    "qty": 64,
+    "price": 168000,
+    "unit": "lonjor",
+    "date": "2026-09-08",
+    "status": "Dibatalkan"
+  },
+  {
+    "id": 8,
+    "materialName": "Kabel NYM 2x1.5mm",
+    "category": "Listrik",
+    "qty": 350,
+    "price": 74000,
+    "unit": "rol",
+    "date": "2026-09-09",
+    "status": "Selesai"
+  },
+  {
+    "id": 9,
+    "materialName": "Gypsum Board 9mm",
+    "category": "Dinding",
+    "qty": 95,
+    "price": 198000,
+    "unit": "lembar",
+    "date": "2026-09-10",
+    "status": "Proses"
+  },
+  {
+    "id": 10,
+    "materialName": "Kaca Tempered 5mm",
+    "category": "Kaca",
+    "qty": 22,
+    "price": 425000,
+    "unit": "lembar",
+    "date": "2026-09-11",
+    "status": "Tertunda"
+  },
+  {
+    "id": 11,
+    "materialName": "Granit Tile 80x80",
+    "category": "Lantai",
+    "qty": 74,
+    "price": 286000,
+    "unit": "box",
+    "date": "2026-09-12",
+    "status": "Selesai"
+  },
+  {
+    "id": 12,
+    "materialName": "Semen Mortar Mix",
+    "category": "Bahan Baku",
+    "qty": 155,
+    "price": 96000,
+    "unit": "sak",
+    "date": "2026-09-13",
+    "status": "Proses"
+  }
+]
